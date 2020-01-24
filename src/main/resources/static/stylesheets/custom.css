@@ -1,0 +1,66 @@
+.cart-count {
+    font-size: 13px;
+    border-radius: 30%;
+    -moz-border-radius: 30%;
+    -webkit-border-radius: 30%;
+    background-color: #008dd1;
+    color: #FFFFFF;
+    padding: 3px;
+}
+
+.app-logo {
+    width: 150px;
+}
+
+.reviews {
+    border-bottom: 1px solid #dadada;
+    padding-bottom: 10px;
+    padding-top: 10px;
+}
+
+.reviews .reviewer img {
+    width: 40px;
+    border-radius: 30px;
+    -webkit-border-radius: 30px;
+    -moz-border-radius: 30px;
+}
+
+.reviews .reviewer span {
+    font-weight: bold;
+}
+
+.reviews .reviewer-rating {
+    margin-bottom: 5px;
+}
+
+.reviews .review {
+    font-size: 12px;
+}
+
+.product-img {
+    height: 300px;
+}
+
+.prod-details img {
+    width: 100%;
+}
+
+.prod-thumbnail img {
+    width: 141px;
+    height: 135px;
+}
+
+.home-background {
+    background: url('/images/happy_shopper.png') no-repeat center;
+    background-size: 80%;
+    position: relative;
+}
+
+.form-check-input {
+    margin-left: 0;
+}
+
+input[type="checkbox"] {
+    height: 0;
+    width: 0;
+}

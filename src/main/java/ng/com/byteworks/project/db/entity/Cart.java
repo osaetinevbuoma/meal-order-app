@@ -25,6 +25,9 @@ public class Cart {
     @ManyToOne(targetEntity = User.class)
     private User user;
 
+    @ManyToOne(targetEntity = Meal.class)
+    private Meal meal;
+
     @CreatedDate
     private Date createdAt;
 

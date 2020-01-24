@@ -10,7 +10,7 @@ import javax.persistence.*;
 import java.util.Date;
 
 @Data
-@Entity
+@Entity(name = "orders")
 @EntityListeners(AuditingEntityListener.class)
 public class Order {
 
@@ -39,6 +39,9 @@ public class Order {
 
     @ManyToOne(targetEntity = DeliveryType.class)
     private DeliveryType deliveryType;
+
+    @ManyToOne(targetEntity = Meal.class)
+    private Meal meal;
 
     @CreatedDate
     private Date createdAt;

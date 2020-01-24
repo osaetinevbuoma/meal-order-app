@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{/layout}">
+<head>
+    <meta th:replace="fragments/csrf :: csrf" />
+    <title>Vendor | Meals</title>
+</head>
+<body>
+    <div layout:fragment="content">
+        <div class="product-collection-area pb-50">
+            <div class="container">
+                <div class="section-title text-center mb-55">
+                    <h2>Meals</h2>
+                </div>
+                <div class="row">
+                    <div class="col-lg-7">
+                        <table class="table table-hover table-striped">
+                            <thead>
+                            <tr>
+                                <th>Meal</th>
+                                <th>Price</th>
+                                <th>Availability</th>
+                                <th></th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr v-for="meal in meals" v-bind:key="meal.id">
+                                <td>{{ meal.name }}</td>
+                                <td>₦{{ meal.price }}</td>
+                                <td v-if="meal.isAvailable">Available</td>
+                                <td v-else>Not available</td>
+                                <td>
+                                    <a href="#" v-on:click.prevent="editMeal(meal.id)">
+                                        <i class="ion-edit"></i>
+                                    </a>
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <!-- Create/Edit meals -->
+                    <div class="col-lg-5">
+                        <form action="#" v-on:submit.prevent="saveMeal()">
+                            <div class="form-group">
+                                <input type="text" class="form-control" placeholder="Name *"
+                                       required="required" v-model="meal.name" />
+                            </div>
+                            <div class="form-group">
+                                <input type="number" min="1" class="form-control"
+                                       placeholder="Price *" required="required" v-model="meal.price" />
+                            </div>
+                            <div class="form-group">
+                                <textarea class="form-control" placeholder="Description *" rows="5" required="required" v-model="meal.description"></textarea>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" id="available"
+                                       v-model="meal.isAvailable">
+                                &nbsp;
+                                <label class="form-check-label" for="available">
+                                    Available?
+                                </label>
+                            </div>
+                            <div class="button-box">
+                                <button type="submit" class="default-btn">Save</button>
+                                &nbsp;
+                                <button type="button" class="default-btn"
+                                        v-on:click="clearForm()">Cancel</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div layout:fragment="javascripts">
+        <!-- Libraries -->
+        <script th:src="@{/javascripts/lib/lodash.js}"></script>
+        <script th:src="@{/javascripts/lib/axios.min.js}"></script>
+        <script th:src="@{/javascripts/lib/vue.min.js}"></script>
+
+        <!-- VueJS app files -->
+        <script th:src="@{/javascripts/app/vue-app/vendor/notification-counter-component.js}"></script>
+        <script th:src="@{/javascripts/app/vue-app/vendor/vendor.js}"></script>
+    </div>
+</body>
+</html>

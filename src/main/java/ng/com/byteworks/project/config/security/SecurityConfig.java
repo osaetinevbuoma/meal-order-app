@@ -12,23 +12,29 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 @EnableWebSecurity
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
     private final AuthenticationService authenticationService;
+    private final AuthSuccessHandlerConfig authSuccessHandlerConfig;
 
-    public SecurityConfig(AuthenticationService authenticationService) {
+    public SecurityConfig(AuthenticationService authenticationService,
+                          AuthSuccessHandlerConfig authSuccessHandlerConfig) {
         this.authenticationService = authenticationService;
+        this.authSuccessHandlerConfig = authSuccessHandlerConfig;
     }
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.authorizeRequests()
-                .antMatchers("/", "/sign-up", "/javascripts/**", "/stylesheets/**",
-                        "/images/**", "/fonts/**").permitAll()
+                .antMatchers("/", "/javascripts/**", "/stylesheets/**", "/images/**",
+                        "/fonts/**").permitAll()
+                .antMatchers("/vendor/**").hasAuthority("ROLE_VENDOR")
+                .antMatchers("/api/vendor/**").hasAuthority("ROLE_VENDOR")
+                .antMatchers("/api/developer/**").hasAuthority("ROLE_DEVELOPER")
                 .anyRequest().authenticated()
                 .and()
                 .formLogin()
                     .loginPage("/").permitAll()
-                    .failureUrl("/?auth-failed")
+                    .failureUrl("/?auth-failed=true")
                     .usernameParameter("email")
-                    .defaultSuccessUrl("/meals")
+                    .successHandler(authSuccessHandlerConfig)
                 .and()
                 .logout().permitAll()
                     .logoutUrl("/logout");

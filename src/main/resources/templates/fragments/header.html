@@ -1,0 +1,44 @@
+<div xmlns:th="http://www.thymeleaf.org"
+     xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+     th:fragment="header">
+    <header>
+        <div class="header-area header-area-padding">
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-6 col-md-6 col-6">
+                        <div class="logo">
+                            <a th:href="@{/}" sec:authorize="isAnonymous()">
+                                <img th:src="@{/images/logo.png}" alt="" class="app-logo" />
+                            </a>
+                            <a th:href="@{/meals}" sec:authorize="isAuthenticated()">
+                                <img th:src="@{/images/logo.png}" alt="" class="app-logo" />
+                            </a>
+                        </div>
+                    </div>
+                    <div class="col-lg-6 col-md-6 col-6" sec:authorize="isAuthenticated()">
+                        <div class="header-search-cart">
+                            <div class="header-cart common-style">
+                                <th:block sec:authorize="hasAuthority('ROLE_VENDOR')">
+                                    <notification-counter></notification-counter>
+                                </th:block>
+                                <th:block sec:authorize="hasAuthority('ROLE_DEVELOPER')">
+                                    <button class="sidebar-trigger" th:title="Cart"
+                                            onclick="window.location = '/cart'"
+                                            th:if="${!#httpServletRequest.servletPath.equals('/order/purchase') &&
+                                        !#httpServletRequest.servletPath.equals('/order/confirmed')}">
+                                        <span class="ion-bag"></span>
+                                        <sup class="cart-count" v-if="cart_count > 0">{{ cart_count }}</sup>
+                                    </button>
+                                </th:block>
+                                <button th:title="Logout" onclick="window.location = '/logout';">
+                                    <span class="ion-log-out"></span>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+    <!-- header end -->
+</div>
