@@ -6,6 +6,7 @@ import ng.com.byteworks.project.service.MealService;
 import ng.com.byteworks.project.service.UtilService;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.*;
@@ -48,6 +49,9 @@ public class MealController {
 
     @GetMapping("/meal/{id}")
     public ResponseEntity<?> mealDetail(@PathVariable("id") int id) {
-        return null;
+        Map<String, Object> meal = mealService.getMeal(id);
+        if (null == meal) return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+
+        return ResponseEntity.ok(meal);
     }
 }

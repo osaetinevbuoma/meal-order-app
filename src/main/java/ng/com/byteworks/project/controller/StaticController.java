@@ -58,7 +58,7 @@ public class StaticController {
     @GetMapping("/meal/{id}")
     @Secured("ROLE_DEVELOPER")
     public String mealDetail(@PathVariable("id") int id) {
-        return null;
+        return "meal/detail";
     }
 
     @GetMapping("/cart")
