@@ -21,14 +21,10 @@
                                 <th:block sec:authorize="hasAuthority('ROLE_VENDOR')">
                                     <notification-counter></notification-counter>
                                 </th:block>
-                                <th:block sec:authorize="hasAuthority('ROLE_DEVELOPER')">
-                                    <button class="sidebar-trigger" th:title="Cart"
-                                            onclick="window.location = '/cart'"
-                                            th:if="${!#httpServletRequest.servletPath.equals('/order/purchase') &&
+                                <th:block sec:authorize="hasAuthority('ROLE_DEVELOPER')"
+                                      th:if="${!#httpServletRequest.servletPath.equals('/order/purchase') &&
                                         !#httpServletRequest.servletPath.equals('/order/confirmed')}">
-                                        <span class="ion-bag"></span>
-                                        <sup class="cart-count" v-if="cart_count > 0">{{ cart_count }}</sup>
-                                    </button>
+                                    <cart-counter :cart_counter="cartCounterIncrement"></cart-counter>
                                 </th:block>
                                 <button th:title="Logout" onclick="window.location = '/logout';">
                                     <span class="ion-log-out"></span>

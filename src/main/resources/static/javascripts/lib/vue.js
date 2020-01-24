@@ -5170,7 +5170,7 @@
       Sub.mixin = Super.mixin;
       Sub.use = Super.use;
 
-      // create asset registers, so extended classes
+      // create asset registers, so extended enums
       // can have their private assets too.
       ASSET_TYPES.forEach(function (type) {
         Sub[type] = Super[type];
@@ -6804,7 +6804,7 @@
 
     var cls = genClassForVnode(vnode);
 
-    // handle transition classes
+    // handle transition enums
     var transitionClass = el._transitionClasses;
     if (isDef(transitionClass)) {
       cls = concat(cls, stringifyClass(transitionClass));
@@ -8970,7 +8970,7 @@
         // Detect whether an element with the move class applied has
         // CSS transitions. Since the element may be inside an entering
         // transition at this very moment, we make a clone of it and remove
-        // all other transition classes applied to ensure only the move class
+        // all other transition enums applied to ensure only the move class
         // is applied.
         var clone = el.cloneNode();
         if (el._transitionClasses) {

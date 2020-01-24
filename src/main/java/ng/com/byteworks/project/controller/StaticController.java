@@ -1,6 +1,7 @@
 package ng.com.byteworks.project.controller;
 
 import ng.com.byteworks.project.service.AuthenticationService;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -49,31 +50,37 @@ public class StaticController {
      * Meal ordering static pages.
      */
     @GetMapping("/meals")
+    @Secured("ROLE_DEVELOPER")
     public String meals() {
-        return null;
+        return "meal/meals";
     }
 
     @GetMapping("/meal/{id}")
+    @Secured("ROLE_DEVELOPER")
     public String mealDetail(@PathVariable("id") int id) {
         return null;
     }
 
     @GetMapping("/cart")
+    @Secured("ROLE_DEVELOPER")
     public String cart() {
         return null;
     }
 
     @GetMapping("/order")
+    @Secured("ROLE_DEVELOPER")
     public String order() {
         return null;
     }
 
     @GetMapping("/order/purchase")
+    @Secured("ROLE_DEVELOPER")
     public String purchase() {
         return null;
     }
 
     @GetMapping("/order/confirmed")
+    @Secured("ROLE_DEVELOPER")
     public String orderConfirmed() {
         return null;
     }
@@ -82,11 +89,13 @@ public class StaticController {
      * Vendor meal management static pages.
      */
     @GetMapping("/vendor/meals")
+    @Secured("ROLE_VENDOR")
     public String vendorMeals() {
         return "static/vendor_meals";
     }
 
     @GetMapping("/vendor/orders")
+    @Secured("ROLE_VENDOR")
     public String vendorOrders() {
         return null;
     }

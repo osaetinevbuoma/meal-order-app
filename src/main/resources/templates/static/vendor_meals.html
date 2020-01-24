@@ -25,13 +25,13 @@
                             </tr>
                             </thead>
                             <tbody>
-                            <tr v-for="meal in meals" v-bind:key="meal.id">
+                            <tr v-for="meal in meals" :key="meal.id">
                                 <td>{{ meal.name }}</td>
                                 <td>₦{{ meal.price }}</td>
                                 <td v-if="meal.isAvailable">Available</td>
                                 <td v-else>Not available</td>
                                 <td>
-                                    <a href="#" v-on:click.prevent="editMeal(meal.id)">
+                                    <a href="#" @click.prevent="editMeal(meal.id)">
                                         <i class="ion-edit"></i>
                                     </a>
                                 </td>
@@ -42,7 +42,7 @@
 
                     <!-- Create/Edit meals -->
                     <div class="col-lg-5">
-                        <form action="#" v-on:submit.prevent="saveMeal()">
+                        <form action="#" @submit.prevent="saveMeal()">
                             <div class="form-group">
                                 <input type="text" class="form-control" placeholder="Name *"
                                        required="required" v-model="meal.name" />
@@ -66,7 +66,7 @@
                                 <button type="submit" class="default-btn">Save</button>
                                 &nbsp;
                                 <button type="button" class="default-btn"
-                                        v-on:click="clearForm()">Cancel</button>
+                                        @click="clearForm()">Cancel</button>
                             </div>
                         </form>
                     </div>
@@ -82,7 +82,7 @@
         <script th:src="@{/javascripts/lib/vue.min.js}"></script>
 
         <!-- VueJS app files -->
-        <script th:src="@{/javascripts/app/vue-app/vendor/notification-counter-component.js}"></script>
+        <script th:src="@{/javascripts/app/vue-app/component/notification-counter-component.js}"></script>
         <script th:src="@{/javascripts/app/vue-app/vendor/vendor.js}"></script>
     </div>
 </body>

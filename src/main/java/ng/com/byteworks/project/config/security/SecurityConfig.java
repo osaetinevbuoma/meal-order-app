@@ -1,5 +1,6 @@
 package ng.com.byteworks.project.config.security;
 
+import ng.com.byteworks.project.enums.RoleEnum;
 import ng.com.byteworks.project.service.AuthenticationService;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
@@ -24,10 +25,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http.authorizeRequests()
                 .antMatchers("/", "/javascripts/**", "/stylesheets/**", "/images/**",
-                        "/fonts/**").permitAll()
-                .antMatchers("/vendor/**").hasAuthority("ROLE_VENDOR")
-                .antMatchers("/api/vendor/**").hasAuthority("ROLE_VENDOR")
-                .antMatchers("/api/developer/**").hasAuthority("ROLE_DEVELOPER")
+                        "/fonts/**", "/api/developer/register").permitAll()
+                .antMatchers("/vendor/**").hasAuthority(RoleEnum.ROLE_VENDOR.toString())
+                .antMatchers("/api/vendor/**").hasAuthority(RoleEnum.ROLE_VENDOR.toString())
+                .antMatchers("/api/**").hasAuthority(RoleEnum.ROLE_DEVELOPER.toString())
                 .anyRequest().authenticated()
                 .and()
                 .formLogin()

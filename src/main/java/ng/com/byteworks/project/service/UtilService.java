@@ -1,5 +1,6 @@
 package ng.com.byteworks.project.service;
 
+import ng.com.byteworks.project.db.entity.Cart;
 import ng.com.byteworks.project.db.entity.Meal;
 import org.springframework.stereotype.Service;
 
@@ -22,5 +23,14 @@ public class UtilService {
         mealMap.put("isAvailable", meal.getIsAvailable());
 
         return mealMap;
+    }
+
+    public Map<String, Object> generateCartMap(Cart cart) {
+        Map<String, Object> cartMap = new HashMap<>();
+        cartMap.put("id", cart.getId());
+        cartMap.put("quantity", cart.getQuantity());
+        cartMap.put("meal", generateMealMap(cart.getMeal()));
+
+        return cartMap;
     }
 }

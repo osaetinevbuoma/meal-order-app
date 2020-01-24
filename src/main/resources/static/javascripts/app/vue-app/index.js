@@ -10,13 +10,9 @@ const app = new Vue({
     data: {
         is_login: true,
         notification: '',
-        user: {
-            first_name: '',
-            last_name: '',
-            email: '',
-            password: '',
-            retype_password: ''
-        }
+        user: {},
+        form_notif: '',
+        alert: ''
     },
     methods: {
         login: function () {
@@ -29,15 +25,23 @@ const app = new Vue({
             this.notification = '';
             if (!_.eq(this.user.password, this.user.retype_password)) {
                 this.notification = 'Passwords do not match';
+                this.user.password = '';
+                this.user.retype_password = '';
                 return;
             }
 
-            axios.post('', this.user, { headers: headers })
+            axios.post('/api/developer/register', this.user, { headers: headers })
                 .then((res) => {
-                    console.log(res);
+                    this.alert = 'alert-success';
+                    this.form_notif = 'Log into your account';
+                    this.is_login = true;
+                    this.user = {};
                 })
                 .catch((err) => {
-                    console.log(err);
+                    this.alert = 'alert-danger';
+                    this.form_notif = err.response.data;
+                    this.user.password = '';
+                    this.user.retype_password = '';
                 });
         }
     }

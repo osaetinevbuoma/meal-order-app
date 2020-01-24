@@ -8,6 +8,7 @@ import ng.com.byteworks.project.db.repository.DeliveryTypeRepository;
 import ng.com.byteworks.project.db.repository.PaymentOptionRepository;
 import ng.com.byteworks.project.db.repository.RoleRepository;
 import ng.com.byteworks.project.db.repository.UserRepository;
+import ng.com.byteworks.project.enums.RoleEnum;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -73,7 +74,7 @@ public class DBInit implements CommandLineRunner {
 
     private List<Role> roles() {
         List<Role> roles = new ArrayList<>();
-        String[] roleArr = { "ROLE_DEVELOPER", "ROLE_VENDOR" };
+        String[] roleArr = { RoleEnum.ROLE_DEVELOPER.toString(), RoleEnum.ROLE_VENDOR.toString() };
         for (String role : roleArr) {
             if (!roleRepository.findByRole(role).isPresent()) {
                 roles.add(new Role(role));
@@ -108,7 +109,7 @@ public class DBInit implements CommandLineRunner {
     }
 
     private User vendor() {
-        Optional<Role> role = roleRepository.findByRole("ROLE_VENDOR");
+        Optional<Role> role = roleRepository.findByRole(RoleEnum.ROLE_VENDOR.toString());
         if (!role.isPresent()) return null;
 
         String firstName = "John";

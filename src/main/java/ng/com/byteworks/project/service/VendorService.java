@@ -26,9 +26,7 @@ public class VendorService {
     public List<Map<String, Object>> listMeals() {
         List<Map<String, Object>> mealList = new ArrayList<>();
         List<Meal> meals = mealRepository.findAll(Sort.by(Sort.Direction.ASC, "name"));
-        meals.forEach(meal -> {
-            mealList.add(utilService.generateMealMap(meal));
-        });
+        meals.forEach(meal -> mealList.add(utilService.generateMealMap(meal)));
 
         return mealList;
     }
