@@ -64,7 +64,7 @@ public class StaticController {
     @GetMapping("/cart")
     @Secured("ROLE_DEVELOPER")
     public String cart() {
-        return null;
+        return "cart/cart";
     }
 
     @GetMapping("/order")

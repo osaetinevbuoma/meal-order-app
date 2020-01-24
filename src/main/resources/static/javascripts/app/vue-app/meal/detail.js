@@ -28,6 +28,7 @@ const app = new Vue({
          */
         addToCart: function (meal) {
             this.notificationMessage = '';
+            this.cartCounterIncrement = false;
 
             const cart = {
                 quantity: this.quantity,

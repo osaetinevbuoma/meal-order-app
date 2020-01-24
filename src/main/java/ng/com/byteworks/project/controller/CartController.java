@@ -8,6 +8,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.logging.Logger;
 
 @RestController
@@ -37,6 +38,20 @@ public class CartController {
         if (null == cart) return ResponseEntity.status(HttpStatus.CONFLICT)
                 .body("Meal already added to cart");
 
+        return ResponseEntity.ok().build();
+    }
+
+    @PutMapping(value = "/cart/update", consumes = MediaType.APPLICATION_JSON_VALUE,
+            produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<?> updateCart(@RequestBody List<Cart> carts) {
+        cartService.updateCart(carts);
+        return ResponseEntity.ok().build();
+    }
+
+    @DeleteMapping(value = "/cart/delete/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<?> deleteCart(@PathVariable("id") String id) {
+        if (id.equals("all")) cartService.deleteAllCartItems();
+        else cartService.deleteCartItem(Integer.parseInt(id));
         return ResponseEntity.ok().build();
     }
 }

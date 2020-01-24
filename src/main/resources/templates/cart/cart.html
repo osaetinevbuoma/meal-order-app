@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{/layout}">
+<head>
+    <meta th:replace="fragments/csrf :: csrf" />
+    <title>Cart</title>
+</head>
+<body>
+<div layout:fragment="content">
+    <!-- shopping-cart-area start -->
+    <div class="cart-main-area pt-20 pb-50">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                    <h1 class="cart-heading">Cart</h1>
+                    <form action="#">
+                        <div class="table table-hover table-striped table-content">
+                            <table>
+                                <thead>
+                                <tr>
+                                    <th class="product-name">Remove</th>
+                                    <th class="product-price"></th>
+                                    <th class="product-name">Meal</th>
+                                    <th class="product-price">Price</th>
+                                    <th class="product-quantity">Quantity</th>
+                                    <th class="product-subtotal">Total</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr v-for="(item, index) in cartItems" :key="item.id">
+                                    <td class="product-remove">
+                                        <a href="#" @click.prevent="removeFromCart(index, false)">
+                                            <i class="ion-android-close"></i>
+                                        </a>
+                                    </td>
+                                    <td class="product-thumbnail">
+                                        <a :href="'/meal/' + item.meal.id">
+                                            <img :src="'/images' + item.meal.image"
+                                                 alt="" width="100" height="80">
+                                        </a>
+                                    </td>
+                                    <td class="product-name">
+                                        <a :href="'/meal/' + item.meal.id">{{ item.meal.name }}</a>
+                                    </td>
+                                    <td class="product-price">
+                                            <span class="amount">
+                                                {{ formatPrice(item.meal.price) }}
+                                            </span>
+                                    </td>
+                                    <td class="product-quantity">
+                                        <input v-model="item.quantity" type="number" min="1">
+                                    </td>
+                                    <td class="product-subtotal">
+                                        {{ computeSubTotal(item.meal.price, item.quantity) }}
+                                    </td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="row">
+                            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                <div class="coupon-all">
+                                    <div class="coupon2" v-if="cartItems.length > 0">
+                                        <input class="button" name="update_cart"
+                                               value="Remove all" type="submit"
+                                               @click.prevent="removeFromCart(0, true)"> &nbsp;
+                                        &nbsp;
+                                        <input class="button" name="update_cart"
+                                               value="Update cart" type="submit"
+                                               @click.prevent="updateCart()">
+                                        <div class="text-success mt-3" v-html="notification_message"
+                                             v-show="show">
+                                            Saved
+                                            <i class="ion-checkmark"></i>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-5 ml-auto">
+                                <div class="cart-page-total">
+                                    <h2>Cart total</h2>
+                                    <ul>
+                                        <li>Total<span>{{ computeTotal() }}</span></li>
+                                    </ul>
+                                    <a th:href="@{/checkout}" v-if="cartItems.length > 0">
+                                        Proceed to checkout
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- shopping-cart-area end -->
+</div>
+
+<div layout:fragment="javascripts">
+    <!-- Libraries -->
+    <script th:src="@{/javascripts/lib/lodash.js}"></script>
+    <script th:src="@{/javascripts/lib/axios.min.js}"></script>
+    <script th:src="@{/javascripts/lib/vue.js}"></script>
+
+    <!-- VueJS app files -->
+    <script th:src="@{/javascripts/app/vue-app/component/cart-counter-component.js}"></script>
+    <script th:src="@{/javascripts/app/vue-app/cart/cart.js}"></script>
+</div>
+</body>
+</html>

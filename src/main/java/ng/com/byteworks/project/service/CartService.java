@@ -6,6 +6,7 @@ import ng.com.byteworks.project.db.repository.CartRepository;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Service;
 
+import javax.swing.text.html.Option;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -44,5 +45,28 @@ public class CartService {
         cartRepository.save(cart);
 
         return cart;
+    }
+
+    public void updateCart(List<Cart> cartList) {
+        User user = authenticationService.getAuthenticatedUser().getUser();
+        cartList.forEach(cart -> {
+            Optional<Cart> cartOptional = cartRepository.findByIdAndUser(cart.getId(), user);
+            if (cartOptional.isPresent()) {
+                cartOptional.get().setQuantity(cart.getQuantity());
+                cartRepository.save(cartOptional.get());
+            }
+        });
+    }
+
+    public void deleteCartItem(int id) {
+        User user = authenticationService.getAuthenticatedUser().getUser();
+        Optional<Cart> cartOptional = cartRepository.findByIdAndUser(id, user);
+        cartOptional.ifPresent(cartRepository::delete);
+    }
+
+    public void deleteAllCartItems() {
+        User user = authenticationService.getAuthenticatedUser().getUser();
+        List<Cart> cartList = cartRepository.findAllByUser(user);
+        cartRepository.deleteAll(cartList);
     }
 }

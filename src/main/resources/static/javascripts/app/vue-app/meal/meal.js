@@ -44,6 +44,7 @@ const app = new Vue({
                 quantity: 1,
                 meal: meal
             };
+            this.cartCounterIncrement = false;
 
             axios.post(API_URL + '/cart/add', cart, { headers: headers })
                 .then((res) => this.cartCounterIncrement = true)

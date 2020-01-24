@@ -35,7 +35,7 @@ Vue.component('cart-counter', {
     },
     watch: {
         cart_counter: function (value, oldValue) {
-            if (value) this.count++;
+            if (value) this.getCart();
         }
     }
 });
