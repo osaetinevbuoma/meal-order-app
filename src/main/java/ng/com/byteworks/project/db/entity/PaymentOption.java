@@ -23,6 +23,9 @@ public class PaymentOption {
     @Column(nullable = false)
     private String option;
 
+    @Column(nullable = false)
+    private Double discount;
+
     @OneToMany(targetEntity = Order.class, mappedBy = "paymentOption")
     private List<Order> orders;
 
@@ -35,7 +38,8 @@ public class PaymentOption {
     public PaymentOption() {
     }
 
-    public PaymentOption(String option) {
+    public PaymentOption(String option, Double discount) {
         this.option = option;
+        this.discount = discount;
     }
 }

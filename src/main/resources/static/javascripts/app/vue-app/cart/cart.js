@@ -4,9 +4,18 @@ const app = new Vue({
     el: '#app',
     data: {
         cartItems: [],
+        paymentOptions: [],
+        paymentOption: {},
+        cardPaymentSelected: false,
+        cardPaymentDiscount: 0,
+        deliveryOptions: [],
+        deliveryOption: {},
+        deliveryCost: 0,
+        officeDeliverySelected: false,
+        distanceToOffice: 200, // assumption is that this is a fixed value
         show: false,
         notification_message: '',
-        cartCounterIncrement: false,
+        cartCounterIncrement: false
     },
     mounted: function () {
         this.getCartItems();
@@ -14,7 +23,11 @@ const app = new Vue({
     methods: {
         getCartItems: function () {
             axios.get(API_URL + '/cart', { headers: headers })
-                .then((res) => this.cartItems = res.data)
+                .then((res) => {
+                    this.cartItems = res.data.cartItems;
+                    this.paymentOptions = res.data.paymentOptions;
+                    this.deliveryOptions = res.data.deliveryOptions;
+                })
                 .catch((err) => console.log(err));
         },
         /**
@@ -52,13 +65,23 @@ const app = new Vue({
             return price * quantity;
         },
         /**
-         * Compute grand total cost of items in cart.
+         * Compute grand total cost of items in cart plus payment and delivery choices.
          * @returns {string}    formatted total of grand total cost
          */
         computeTotal: function () {
             let total = 0;
             for (let i = 0; i < this.cartItems.length; i++) {
                 total += (this.cartItems[i].meal.price * this.cartItems[i].quantity);
+            }
+
+            if (this.cardPaymentSelected) {
+                this.cardPaymentDiscount = (this.paymentOption.discount / 100) * total;
+                total -= this.cardPaymentDiscount;
+            }
+
+            if (this.officeDeliverySelected) {
+                this.deliveryCost = this.deliveryOption.amount * this.distanceToOffice;
+                total += this.deliveryCost;
             }
 
             return this.formatPrice(total);
@@ -87,6 +110,34 @@ const app = new Vue({
                     }, 1500);
                 })
                 .catch((error) => console.log(error));
+        },
+        /**
+         * Select payment option.
+         * @param option
+         */
+        selectPaymentOption: function (option) {
+            this.paymentOption = option;
+
+            if (option.option === 'Card Payment') {
+                this.cardPaymentSelected = true;
+            } else {
+                this.cardPaymentSelected = false;
+                this.cardPaymentDiscount = 0;
+            }
+        },
+        /**
+         * Select delivery option
+         * @param option
+         */
+        selectDeliveryOption: function (option) {
+            this.deliveryOption = option;
+
+            if (option.type === 'Office Delivery') {
+                this.officeDeliverySelected = true;
+            } else {
+                this.officeDeliverySelected = false;
+                this.deliveryCost = 0;
+            }
         }
     }
 });

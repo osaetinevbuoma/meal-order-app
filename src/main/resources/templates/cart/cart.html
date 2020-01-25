@@ -81,14 +81,42 @@
                         <div class="row">
                             <div class="col-md-5 ml-auto">
                                 <div class="cart-page-total">
+                                    <h5>Payment Option</h5>
+                                    <ul>
+                                        <li v-for="option in paymentOptions" :key="option.id">
+                                            <input type="radio" name="paymentOption" :id="'payment_' +option.id"
+                                                   :value="option" @change="selectPaymentOption(option)">
+                                            <label class="custom-control-label" :for="'payment_' + option.id">
+                                                {{ option.option }}</label>
+                                        </li>
+                                    </ul><br>
+
+                                    <h5>Delivery Option</h5>
+                                    <ul>
+                                        <li v-for="option in deliveryOptions" :key="option.id">
+                                            <input type="radio" name="deliveryOption" :id="'delivery_' + option.id"
+                                                   :value="option" @change="selectDeliveryOption(option)">
+                                            <label class="custom-control-label" :for="'delivery_' + option.id">
+                                                {{ option.type }}</label>
+                                        </li>
+                                    </ul><br>
+
                                     <h2>Cart total</h2>
                                     <ul>
+                                        <li v-if="cardPaymentDiscount > 0">
+                                            Card Payment Discount
+                                            <format-price :price="cardPaymentDiscount"></format-price>
+                                        </li>
+                                        <li v-if="deliveryCost > 0">
+                                            Delivery Cost
+                                            <format-price :price="deliveryCost"></format-price>
+                                        </li>
                                         <li>Total<span>
                                             {{ computeTotal() }}
                                         </span></li>
                                     </ul>
-                                    <a th:href="@{/order}" v-if="cartItems.length > 0">
-                                        Proceed to checkout
+                                    <a href="#" v-if="cartItems.length > 0">
+                                        Place Order
                                     </a>
                                 </div>
                             </div>
@@ -102,10 +130,8 @@
 </div>
 
 <div layout:fragment="javascripts">
-    <!-- Libraries -->
-    <script th:src="@{/javascripts/lib/lodash.js}"></script>
-    <script th:src="@{/javascripts/lib/axios.min.js}"></script>
-    <script th:src="@{/javascripts/lib/vue.min.js}"></script>
+    <!-- Paystack library -->
+    <script src="https://js.paystack.co/v1/inline.js"></script>
 
     <!-- VueJS app files -->
     <script th:src="@{/javascripts/app/vue-app/component/cart-counter.component.js}"></script>

@@ -68,3 +68,8 @@ input[type="checkbox"] {
     height: 0;
     width: 0;
 }
+
+input[type="radio"] {
+    height: 0;
+    width: 0;
+}

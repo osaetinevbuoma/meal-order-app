@@ -87,9 +87,10 @@ public class DBInit implements CommandLineRunner {
     private List<DeliveryType> deliveryTypes() {
         List<DeliveryType> deliveryTypes = new ArrayList<>();
         String[] types = { "Office Delivery", "Pick Up" };
-        for (String type : types) {
-            if (!deliveryTypeRepository.findByType(type).isPresent()) {
-                deliveryTypes.add(new DeliveryType(type));
+        double[] amounts = { 10, 0 };
+        for (int i = 0; i < types.length; i++) {
+            if (!deliveryTypeRepository.findByType(types[i]).isPresent()) {
+                deliveryTypes.add(new DeliveryType(types[i], amounts[i]));
             }
         }
 
@@ -99,9 +100,10 @@ public class DBInit implements CommandLineRunner {
     private List<PaymentOption> paymentOptions() {
         List<PaymentOption> paymentOptions = new ArrayList<>();
         String[] options = { "Card Payment", "Pay On Delivery" };
-        for (String option : options) {
-            if (!paymentOptionRepository.findByOption(option).isPresent()) {
-                paymentOptions.add(new PaymentOption(option));
+        double[] discounts = { 2.5, 0 };
+        for (int i = 0; i < options.length; i++) {
+            if (!paymentOptionRepository.findByOption(options[i]).isPresent()) {
+                paymentOptions.add(new PaymentOption(options[i], discounts[i]));
             }
         }
 

@@ -23,6 +23,9 @@ public class DeliveryType {
     @Column(nullable = false)
     private String type;
 
+    @Column(nullable = false)
+    private Double amount;
+
     @OneToMany(targetEntity = Order.class, mappedBy = "deliveryType")
     private List<Order> orders;
 
@@ -35,7 +38,8 @@ public class DeliveryType {
     public DeliveryType() {
     }
 
-    public DeliveryType(String type) {
+    public DeliveryType(String type, Double amount) {
         this.type = type;
+        this.amount = amount;
     }
 }

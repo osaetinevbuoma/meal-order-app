@@ -70,7 +70,7 @@ public class StaticController {
     @GetMapping("/order")
     @Secured("ROLE_DEVELOPER")
     public String order() {
-        return null;
+        return "order/order";
     }
 
     @GetMapping("/order/purchase")

@@ -29,7 +29,7 @@ Vue.component('cart-counter', {
     methods: {
         getCart: function () {
             axios.get(API_URL + '/cart', { headers: headers })
-                .then((res) => this.count = res.data.length)
+                .then((res) => this.count = res.data.cartItems.length)
                 .catch((err) => console.log(err));
         }
     },
