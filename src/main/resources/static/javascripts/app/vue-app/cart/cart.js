@@ -46,10 +46,10 @@ const app = new Vue({
          * Compute sub total price of items in cart
          * @param price         price of product
          * @param quantity      quantity of product item
-         * @returns {string}    formatted sub total price
+         * @returns {number}    formatted sub total price
          */
         computeSubTotal: function (price, quantity) {
-            return this.formatPrice(price * quantity);
+            return price * quantity;
         },
         /**
          * Compute grand total cost of items in cart.

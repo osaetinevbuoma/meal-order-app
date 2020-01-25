@@ -29,7 +29,7 @@
                         <div class="product-details-content">
                             <h3>{{ meal.name }}</h3>
                             <div class="details-price">
-                                <span>₦{{ meal.price }}</span>
+                                <span>{{ formatPrice(meal.price) }}</span>
                             </div>
                             <p>{{ meal.description }}</p>
                             <div class="quickview-plus-minus">
@@ -59,7 +59,7 @@
         <script th:src="@{/javascripts/lib/vue.min.js}"></script>
 
         <!-- VueJS app files -->
-        <script th:src="@{/javascripts/app/vue-app/component/cart-counter-component.js}"></script>
+        <script th:src="@{/javascripts/app/vue-app/component/cart-counter.component.js}"></script>
         <script th:src="@{/javascripts/app/vue-app/meal/detail.js}"></script>
     </div>
 </body>

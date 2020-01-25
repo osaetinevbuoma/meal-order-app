@@ -55,6 +55,15 @@ const app = new Vue({
                         }, 1500);
                     }
                 });
-        }
+        },
+        /**
+         * Format prices for better display in view
+         * @param price         price of product to format
+         * @returns {string}    formatted price
+         */
+        formatPrice: function (price) {
+            return '₦' + price.toFixed(2).replace(/(\d)(?=(\d{3})+(?!\d))/g,
+                '$1,');
+        },
     }
 });

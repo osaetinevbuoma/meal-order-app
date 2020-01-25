@@ -29,7 +29,7 @@
                                         </h4>
                                     </div>
                                     <div class="product-price">
-                                        <span>₦{{ meal.price  }}</span>
+                                        <format-price :price="meal.price"></format-price>
                                     </div>
                                 </div>
                                 <div class="product-cart-categori">
@@ -90,7 +90,8 @@
         <script th:src="@{/javascripts/lib/vue.min.js}"></script>
 
         <!-- VueJS app files -->
-        <script th:src="@{/javascripts/app/vue-app/component/cart-counter-component.js}"></script>
+        <script th:src="@{/javascripts/app/vue-app/component/cart-counter.component.js}"></script>
+        <script th:src="@{/javascripts/app/vue-app/component/format-price.component.js}"></script>
         <script th:src="@{/javascripts/app/vue-app/meal/meal.js}"></script>
     </div>
 </body>
