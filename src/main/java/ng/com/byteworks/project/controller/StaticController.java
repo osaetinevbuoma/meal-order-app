@@ -82,7 +82,7 @@ public class StaticController {
     @GetMapping("/order/confirmed")
     @Secured("ROLE_DEVELOPER")
     public String orderConfirmed() {
-        return null;
+        return "order/confirmed";
     }
 
     /*

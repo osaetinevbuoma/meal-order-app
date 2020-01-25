@@ -15,7 +15,9 @@ const app = new Vue({
         distanceToOffice: 200, // assumption is that this is a fixed value
         show: false,
         notification_message: '',
-        cartCounterIncrement: false
+        cartCounterIncrement: false,
+        developerEmail: '',
+        totalCost: 0
     },
     mounted: function () {
         this.getCartItems();
@@ -27,6 +29,10 @@ const app = new Vue({
                     this.cartItems = res.data.cartItems;
                     this.paymentOptions = res.data.paymentOptions;
                     this.deliveryOptions = res.data.deliveryOptions;
+                    this.developerEmail = res.data.developerEmail;
+
+                    this.paymentOption = _.find(this.paymentOptions, { option: 'Pay On Delivery' });
+                    this.deliveryOption = _.find(this.deliveryOptions, { type: 'Pick Up' });
                 })
                 .catch((err) => console.log(err));
         },
@@ -59,32 +65,34 @@ const app = new Vue({
          * Compute sub total price of items in cart
          * @param price         price of product
          * @param quantity      quantity of product item
-         * @returns {number}    formatted sub total price
+         * @returns {string}    formatted sub total price
          */
         computeSubTotal: function (price, quantity) {
-            return price * quantity;
+            return this.formatPrice(price * quantity);
         },
         /**
          * Compute grand total cost of items in cart plus payment and delivery choices.
          * @returns {string}    formatted total of grand total cost
          */
         computeTotal: function () {
-            let total = 0;
+            let totalCost = 0;
             for (let i = 0; i < this.cartItems.length; i++) {
-                total += (this.cartItems[i].meal.price * this.cartItems[i].quantity);
+                totalCost += (this.cartItems[i].meal.price * this.cartItems[i].quantity);
             }
 
             if (this.cardPaymentSelected) {
-                this.cardPaymentDiscount = (this.paymentOption.discount / 100) * total;
-                total -= this.cardPaymentDiscount;
+                this.cardPaymentDiscount = (this.paymentOption.discount / 100) * totalCost;
+                totalCost -= this.cardPaymentDiscount;
             }
 
             if (this.officeDeliverySelected) {
                 this.deliveryCost = this.deliveryOption.amount * this.distanceToOffice;
-                total += this.deliveryCost;
+                totalCost += this.deliveryCost;
             }
 
-            return this.formatPrice(total);
+            this.totalCost = totalCost;
+
+            return this.formatPrice(totalCost);
         },
         /**
          * Format prices for better display in view
@@ -99,7 +107,6 @@ const app = new Vue({
          * Update quantity of products in customer's cart.
          */
         updateCart: function () {
-            console.log(this.cartItems);
             axios.put(API_URL + '/cart/update', this.cartItems, { headers: headers })
                 .then((res) => {
                     this.notification_message = 'Saved <i class="ion-checkmark"></i>';
@@ -137,6 +144,62 @@ const app = new Vue({
             } else {
                 this.officeDeliverySelected = false;
                 this.deliveryCost = 0;
+            }
+        },
+        /**
+         * Place order and make payment
+         */
+        placeOrder: function () {
+            let orders = [];
+            for (let i = 0; i < this.cartItems.length; i++) {
+                let order = {
+                    quantity: this.cartItems[i].quantity,
+                    meal: this.cartItems[i].meal,
+                    isPlacedNow: true,
+                    isDispatched: false,
+                    isPaid: true,
+                    paymentOption: this.paymentOption,
+                    deliveryType: this.deliveryOption
+                };
+
+                orders.push(order);
+            }
+
+            console.log(orders);
+            console.log(this.totalCost);
+
+            if (this.paymentOption.option === 'Card Payment') {
+                // Use Paystack to make payment
+                let paymentHandler = PaystackPop.setup({
+                    key: 'pk_test_11e5abfb56cdb46ed86516ce2620a87119819546',
+                    email: this.developerEmail,
+                    amount: this.totalCost * 100,
+                    currency: 'NGN',
+                    ref: '' + Math.floor((Math.random() * 1000000000) + 1),
+                    callback: (response) => {
+                        axios.post(API_URL + '/order/save', orders, { headers: headers })
+                            .then((res) => window.location = '/order/confirmed')
+                            .catch((err) => {
+                                console.log(err)
+                                // in case connection to mail server fails on localhost
+                                setTimeout(() => {
+                                    window.location = '/order/confirmed';
+                                }, 3000);
+                            });
+                    }
+                });
+
+                paymentHandler.openIframe();
+            } else {
+                axios.post(API_URL + '/order/save', orders, { headers: headers })
+                    .then((res) => window.location = '/order/confirmed')
+                    .catch((err) => {
+                        console.log(err)
+                        // in case connection to mail server fails on localhost
+                        setTimeout(() => {
+                            window.location = '/order/confirmed';
+                        }, 3000);
+                    });
             }
         }
     }

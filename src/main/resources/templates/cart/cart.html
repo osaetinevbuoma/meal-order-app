@@ -52,7 +52,7 @@
                                         <input v-model="item.quantity" type="number" min="1">
                                     </td>
                                     <td class="product-subtotal">
-                                        <format-price :price="computeSubTotal(item.meal.price, item.quantity)"></format-price>
+                                        {{ computeSubTotal(item.meal.price, item.quantity) }}
                                     </td>
                                 </tr>
                                 </tbody>
@@ -85,7 +85,8 @@
                                     <ul>
                                         <li v-for="option in paymentOptions" :key="option.id">
                                             <input type="radio" name="paymentOption" :id="'payment_' +option.id"
-                                                   :value="option" @change="selectPaymentOption(option)">
+                                                   :value="option" :checked="option === paymentOption"
+                                                   @change="selectPaymentOption(option)">
                                             <label class="custom-control-label" :for="'payment_' + option.id">
                                                 {{ option.option }}</label>
                                         </li>
@@ -95,7 +96,8 @@
                                     <ul>
                                         <li v-for="option in deliveryOptions" :key="option.id">
                                             <input type="radio" name="deliveryOption" :id="'delivery_' + option.id"
-                                                   :value="option" @change="selectDeliveryOption(option)">
+                                                   :value="option" :checked="option === deliveryOption"
+                                                   @change="selectDeliveryOption(option)">
                                             <label class="custom-control-label" :for="'delivery_' + option.id">
                                                 {{ option.type }}</label>
                                         </li>
@@ -111,11 +113,10 @@
                                             Delivery Cost
                                             <format-price :price="deliveryCost"></format-price>
                                         </li>
-                                        <li>Total<span>
-                                            {{ computeTotal() }}
-                                        </span></li>
+                                        <li>Total <span>{{ computeTotal() }}</span></li>
                                     </ul>
-                                    <a href="#" v-if="cartItems.length > 0">
+                                    <a href="#" v-if="cartItems.length > 0"
+                                       @click.prevent="placeOrder()">
                                         Place Order
                                     </a>
                                 </div>

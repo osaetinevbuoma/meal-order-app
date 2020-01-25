@@ -12,6 +12,7 @@ import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
+import java.util.logging.Logger;
 
 @Service
 @Secured("ROLE_DEVELOPER")
@@ -21,6 +22,8 @@ public class CartService {
     private final DeliveryTypeRepository deliveryTypeRepository;
     private final PaymentOptionRepository paymentOptionRepository;
     private final UtilService utilService;
+
+    private final static Logger log = Logger.getLogger(CartService.class.getName());
 
     public CartService(AuthenticationService authenticationService, CartRepository cartRepository,
                        DeliveryTypeRepository deliveryTypeRepository,
@@ -40,6 +43,7 @@ public class CartService {
         List<Cart> carts = cartRepository.findAllByUser(user);
         carts.forEach(cart -> cartList.add(utilService.generateCartMap(cart)));
         cartMap.put("cartItems", cartList);
+        cartMap.put("developerEmail", user.getEmail());
 
         List<Map<String, Object>> types = new ArrayList<>();
         List<DeliveryType> deliveryTypes = deliveryTypeRepository.findAll(Sort.by(Sort.Direction.ASC,

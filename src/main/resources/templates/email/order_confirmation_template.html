@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>Byteworks - Order Placed</title>
+
+    <style>
+        body{ background: #f1f2f6; padding: 2%; font-size: 14px; font-family: 'arial', sans-sarif; }
+        table{ padding: 0; margin: 0; border: none;  }
+        .maintable{ width: 600px; margin: 0 auto; }
+        .bigtext{font-size: 30px; color: #000;}
+        a.linktext{ color: #ff0000; text-decoration: none; white-space: nowrap; }
+
+        @media (max-width: 600px) {
+            body{ padding: 15px; }
+            .maintable{ width: 100%; }
+        }
+        @media (max-width: 414px) {
+            .bigtext{font-size: 22px;}
+
+        }
+    </style>
+</head>
+<body>
+    <table cellspacing="0" cellpadding="0" class="maintable">
+        <tr>
+            <td>
+                <table cellspacing="0" cellpadding="0" width="100%" align="center" style="background: #fff; text-align: center;">
+                    <tr>
+                        <td align="center" style="padding: 40px 0 30px;">
+                            <img src="../../static/images/logo.png" th:src="|cid:${logo}|"
+                                 width="144" alt="">
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="bigtext">Order Placement</td>
+                    </tr>
+                    <tr>
+                        <td style="font-size: 14px; color: #737373; padding: 20px 0 35px 0;">
+                            An order has been placed by
+                            <span th:text="${orders.get(0).user.firstName  + ' ' + orders.get(0).user.lastName}"></span>. <br>
+                            The details of the purchase is as follows:
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="font-size: 14px; color: #737373; padding: 20px 0 35px 0;" align="center">
+                            <table cellspacing="2">
+                                <tr th:each="order : ${orders}">
+                                    <td>
+                                        <img th:src="${baseUrl + '/images' + order.meal.image}"
+                                             style="width: 80px;">
+                                    </td>
+                                    <td>
+                                        <span th:text="${order.meal.name + ' &times; ' + order.quantity}"></span>
+                                    </td>
+                                </tr>
+                            </table>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="font-size: 14px; color: #737373; padding: 20px 0 35px 0;">
+                            <strong>Payment Option</strong>:
+                            <span th:text="${orders.get(0).paymentOption.option}"></span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="font-size: 14px; color: #737373; padding: 20px 0 35px 0;">
+                            <strong>Delivery Option</strong>:
+                            <span th:text="${orders.get(0).deliveryType.type}"></span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="padding: 35px 0 50px; font-size: 14px; color: #737373; line-height: 20px;">
+                        </td>
+                    </tr>
+                </table>
+            </td>
+        </tr>
+        <tr>
+            <td align="center" style="padding: 20px 0; color: #6d6d6f; font-size: 12px;">
+                &copy;<script>document.write(new Date().getFullYear());</script> Byteworks Meals.
+        </tr>
+    </table>
+</body>
+</html>
