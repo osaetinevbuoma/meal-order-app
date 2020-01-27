@@ -36,7 +36,7 @@ dependencies {
     developmentOnly 'org.springframework.boot:spring-boot-devtools'
     runtimeOnly 'com.h2database:h2'
     annotationProcessor 'org.projectlombok:lombok'
-    compileOnly 'org.springframework.boot:spring-boot-starter-tomcat'
+    providedRuntime 'org.springframework.boot:spring-boot-starter-tomcat'
     testImplementation('org.springframework.boot:spring-boot-starter-test') {
         exclude group: 'org.junit.vintage', module: 'junit-vintage-engine'
     }
@@ -45,4 +45,20 @@ dependencies {
 
 test {
     useJUnitPlatform()
+}
+
+jar {
+    enabled = true
+}
+
+bootJar {
+    classifier = 'boot'
+}
+
+war {
+    enabled = true
+}
+
+bootWar {
+    classifier = 'boot'
 }
