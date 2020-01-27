@@ -1,7 +1,7 @@
 package com.modnsolutions.project.config.security;
 
-import com.modnsolutions.project.service.AuthenticationService;
 import com.modnsolutions.project.enums.RoleEnum;
+import com.modnsolutions.project.service.AuthenticationService;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;

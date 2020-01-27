@@ -2,8 +2,6 @@ package com.modnsolutions.project;
 
 import com.modnsolutions.project.db.entity.*;
 import com.modnsolutions.project.db.repository.*;
-import ng.com.byteworks.project.db.entity.*;
-import ng.com.byteworks.project.db.repository.*;
 import com.modnsolutions.project.enums.RoleEnum;
 import com.modnsolutions.project.service.UtilService;
 import org.springframework.boot.CommandLineRunner;
@@ -16,7 +14,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Component
-@ConditionalOnProperty(name = "ng.com.byteworks.db.init", havingValue = "true")
+@ConditionalOnProperty(name = "db.init", havingValue = "true")
 public class DBInit implements CommandLineRunner {
     private final DeliveryTypeRepository deliveryTypeRepository;
     private final PaymentOptionRepository paymentOptionRepository;
