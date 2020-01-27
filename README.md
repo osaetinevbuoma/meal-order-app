@@ -35,8 +35,11 @@ with your preferred parameters.
 to `http://localhost:8080`.
 
 ### Demo
-You can access a demo online, [here](https://byteworks-meals.herokuapp.com/). Or download
-and watch a [demo video](/assets/Meal_Order_Demo.mp4).
+You can access a demo online, [here](https://byteworks-meals.herokuapp.com/). Use 
+the email `osaetinevbuoma@gmail.com` and password `123` to sign in as a vendor. 
+You can create any `User` account using the registration form.
+ 
+Or download and watch a [demo video](/assets/Meal_Order_Demo.mp4).
 
 ### Assets Included
 * Demo Video: [here](/assets/Meal_Order_Demo.mp4)
