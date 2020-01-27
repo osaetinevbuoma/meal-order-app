@@ -29,7 +29,7 @@ public class StaticController {
                     "combination");
         }
 
-        return "static/index";
+        return "/static/index";
     }
 
     @GetMapping("/logout")
