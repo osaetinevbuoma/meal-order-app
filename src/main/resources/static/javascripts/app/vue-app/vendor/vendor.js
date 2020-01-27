@@ -5,7 +5,8 @@ const app = new Vue({
     data: {
         meals: [],
         meal: {},
-        mealFulfilled: false
+        mealFulfilled: false,
+        pageNumbers: [],
     },
     mounted: function () {
         this.getMeals();
@@ -16,7 +17,22 @@ const app = new Vue({
          */
         getMeals: function () {
             axios.get(API_URL + '/meals', { headers: headers })
-                .then((res) => this.meals = res.data)
+                .then((res) => {
+                    this.meals = res.data.meals;
+                    this.pageNumbers = res.data.pageNumbers;
+                })
+                .catch((err) => console.log(err));
+        },
+        /**
+         * Fetch more meals depending on the page number
+         * @param page
+         */
+        fetchMeals: function (page) {
+            axios.get(API_URL + '/meals', { params: { page: page } }, { headers: headers })
+                .then((res) => {
+                    this.meals = res.data.meals;
+                    this.pageNumbers = res.data.pageNumbers
+                })
                 .catch((err) => console.log(err));
         },
         /**
@@ -32,7 +48,7 @@ const app = new Vue({
         addMeal: function () {
             axios.post(API_URL + '/meal/add', this.meal, { headers: headers })
                 .then((res) => {
-                    this.meals.push(res.data);
+                    this.meals.content.push(res.data);
                     this.meal = {};
                 })
                 .catch((err) => console.log(err));
@@ -48,7 +64,7 @@ const app = new Vue({
          * @param id id of meal
          */
         editMeal: function (id) {
-            this.meal = _.find(this.meals, { 'id': id });
+            this.meal = _.find(this.meals.content, { 'id': id });
         },
         /**
          * Update meal
@@ -56,11 +72,11 @@ const app = new Vue({
         updateMeal: function () {
             axios.put(API_URL + '/meal/update', this.meal, { headers: headers })
                 .then((res) => {
-                    let meal_index = _.findIndex(this.meals, { 'id': this.meal.id });
-                    let first_half_arr = _.slice(this.meals, 0, meal_index);
-                    let second_half_arr = _.slice(this.meals, meal_index+1);
+                    let meal_index = _.findIndex(this.meals.content, { 'id': this.meal.id });
+                    let first_half_arr = _.slice(this.meals.content, 0, meal_index);
+                    let second_half_arr = _.slice(this.meals.content, meal_index+1);
                     first_half_arr.push(this.meal);
-                    this.meals = _.concat(first_half_arr, second_half_arr);
+                    this.meals.content = _.concat(first_half_arr, second_half_arr);
                     this.meal = {};
                 })
                 .catch((err) => console.log(err));

@@ -3,15 +3,21 @@ package ng.com.byteworks.project.controller;
 import ng.com.byteworks.project.db.entity.Meal;
 import ng.com.byteworks.project.db.entity.MealOrder;
 import ng.com.byteworks.project.service.VendorService;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.logging.Logger;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 @RestController
 @Secured("ROLE_VENDOR")
@@ -26,8 +32,25 @@ public class VendorController {
     }
 
     @GetMapping(value = "/meals", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<?> listMeals() {
-        return ResponseEntity.ok(vendorService.listMeals());
+    public ResponseEntity<?> listMeals(@RequestParam("page") Optional<Integer> page) {
+        Map<String, Object> meals = new HashMap<>();
+
+        int currentPage = page.orElse(1);
+        int itemsPerPage = 8;
+
+        Page<Meal> mPage = vendorService.listMeals(PageRequest.of(currentPage - 1,
+                itemsPerPage));
+        meals.put("meals", mPage);
+
+        int totalPages = mPage.getTotalPages();
+        if (totalPages > 0) {
+            List<Integer> pageNumbers = IntStream.rangeClosed(1, totalPages)
+                    .boxed()
+                    .collect(Collectors.toList());
+            meals.put("pageNumbers", pageNumbers);
+        }
+
+        return ResponseEntity.ok(meals);
     }
 
     @PostMapping(value = "/meal/add", consumes = MediaType.APPLICATION_JSON_VALUE,

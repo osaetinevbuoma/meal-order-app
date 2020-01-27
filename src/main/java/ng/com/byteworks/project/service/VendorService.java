@@ -2,6 +2,8 @@ package ng.com.byteworks.project.service;
 
 import ng.com.byteworks.project.db.entity.*;
 import ng.com.byteworks.project.db.repository.*;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Service;
@@ -34,12 +36,14 @@ public class VendorService {
      * List meals created by vendor
      * @return
      */
-    public List<Map<String, Object>> listMeals() {
-        List<Map<String, Object>> mealList = new ArrayList<>();
-        List<Meal> meals = mealRepository.findAll(Sort.by(Sort.Direction.ASC, "name"));
-        meals.forEach(meal -> mealList.add(utilService.generateMealMap(meal)));
+    public Page<Meal> listMeals(Pageable pageable) {
+        Page<Meal> meals = mealRepository.findAll(pageable);
+        meals.get().forEach(meal -> {
+            meal.setCarts(null);
+            meal.setOrderedMeals(null);
+        });
 
-        return mealList;
+        return meals;
     }
 
     /**
