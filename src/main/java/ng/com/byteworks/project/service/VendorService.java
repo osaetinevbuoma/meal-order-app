@@ -30,6 +30,10 @@ public class VendorService {
         this.utilService = utilService;
     }
 
+    /**
+     * List meals created by vendor
+     * @return
+     */
     public List<Map<String, Object>> listMeals() {
         List<Map<String, Object>> mealList = new ArrayList<>();
         List<Meal> meals = mealRepository.findAll(Sort.by(Sort.Direction.ASC, "name"));
@@ -38,6 +42,11 @@ public class VendorService {
         return mealList;
     }
 
+    /**
+     * Add a new meal
+     * @param meal
+     * @return
+     */
     public Map<String, Object> addMeal(Meal meal) {
         String image = "/food/food_" + utilService.generateRandomNumber(1, 12) + ".jpg";
         meal.setImage(image);
@@ -48,11 +57,21 @@ public class VendorService {
         return utilService.generateMealMap(meal);
     }
 
+    /**
+     * Get instance of an existing meal if it exist
+     * @param id
+     * @return
+     */
     public Map<String, Object> getMeal(int id) {
         Optional<Meal> meal = mealRepository.findById(id);
         return meal.map(utilService::generateMealMap).orElse(null);
     }
 
+    /**
+     * Update a meal's data
+     * @param updatedMeal
+     * @return
+     */
     public Map<String, Object> updateMeal(Meal updatedMeal) {
         Optional<Meal> meal = mealRepository.findById(updatedMeal.getId());
         if (!meal.isPresent()) return null;
