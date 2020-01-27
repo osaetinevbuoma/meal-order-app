@@ -1,7 +1,6 @@
 package com.modnsolutions.project.service;
 
 import com.modnsolutions.project.db.entity.*;
-import ng.com.byteworks.project.db.entity.*;
 import org.springframework.stereotype.Service;
 
 import java.util.HashMap;

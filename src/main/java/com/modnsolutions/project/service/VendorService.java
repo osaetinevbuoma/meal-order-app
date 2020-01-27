@@ -2,8 +2,6 @@ package com.modnsolutions.project.service;
 
 import com.modnsolutions.project.db.entity.*;
 import com.modnsolutions.project.db.repository.*;
-import ng.com.byteworks.project.db.entity.*;
-import ng.com.byteworks.project.db.repository.*;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
