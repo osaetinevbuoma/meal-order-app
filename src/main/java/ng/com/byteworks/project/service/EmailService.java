@@ -62,7 +62,7 @@ public class EmailService {
         properties.setProperty("mail.smtp.timeout", String.valueOf(5000));
         properties.setProperty("mail.smtp.writetimeout", String.valueOf(5000));
         properties.setProperty("mail.transport.protocol", "smtp");
-        properties.setProperty("mail.account.from", "Byteworks Meals <no-reply@byteworks.com.ng>");
+        properties.setProperty("mail.account.from", "Byteworks Eats <no-reply@byteworks.com.ng>");
 
         return sender;
     }
@@ -115,7 +115,7 @@ public class EmailService {
             // Prepare message using a Spring helper
             MimeMessage message = sender.createMimeMessage();
             MimeMessageHelper helper = mimeMessageHelper(sender, message, emailAddress,
-                    "MealOrder Placed", htmlContent);
+                    "Meal Order Placed", htmlContent);
 
             sender.send(message);
         } catch (MessagingException e) {

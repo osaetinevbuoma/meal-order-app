@@ -181,7 +181,7 @@ const app = new Vue({
                 let paymentHandler = PaystackPop.setup({
                     key: 'pk_test_11e5abfb56cdb46ed86516ce2620a87119819546',
                     email: this.developerEmail,
-                    amount: this.totalCost * 100,
+                    amount: parseInt(this.totalCost) * 100,
                     currency: 'NGN',
                     ref: reference,
                     callback: (response) => {
