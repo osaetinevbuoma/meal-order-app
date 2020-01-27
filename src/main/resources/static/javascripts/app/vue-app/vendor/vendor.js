@@ -4,7 +4,8 @@ const app = new Vue({
     el: '#app',
     data: {
         meals: [],
-        meal: {}
+        meal: {},
+        mealFulfilled: false
     },
     mounted: function () {
         this.getMeals();

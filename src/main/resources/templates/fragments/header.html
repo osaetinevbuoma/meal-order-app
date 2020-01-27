@@ -10,7 +10,10 @@
                             <a th:href="@{/}" sec:authorize="isAnonymous()">
                                 <img th:src="@{/images/logo.png}" alt="" class="app-logo" />
                             </a>
-                            <a th:href="@{/meals}" sec:authorize="isAuthenticated()">
+                            <a th:href="@{/meals}" sec:authorize="hasAuthority('ROLE_DEVELOPER')">
+                                <img th:src="@{/images/logo.png}" alt="" class="app-logo" />
+                            </a>
+                            <a th:href="@{/vendor/meals}" sec:authorize="hasAuthority('ROLE_VENDOR')">
                                 <img th:src="@{/images/logo.png}" alt="" class="app-logo" />
                             </a>
                         </div>
@@ -19,7 +22,7 @@
                         <div class="header-search-cart">
                             <div class="header-cart common-style">
                                 <th:block sec:authorize="hasAuthority('ROLE_VENDOR')">
-                                    <notification-counter></notification-counter>
+                                    <notification-counter :cart_counter="mealFulfilled"></notification-counter>
                                 </th:block>
                                 <th:block sec:authorize="hasAuthority('ROLE_DEVELOPER')"
                                       th:if="${!#httpServletRequest.servletPath.equals('/order/purchase') &&

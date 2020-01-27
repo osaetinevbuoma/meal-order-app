@@ -18,7 +18,10 @@
                                 <a th:href="@{/}" sec:authorize="isAnonymous()">
                                     <img th:src="@{/images/logo.png}" alt="" class="app-logo" />
                                 </a>
-                                <a th:href="@{/products}" sec:authorize="isAuthenticated()">
+                                <a th:href="@{/meals}" sec:authorize="hasAuthority('ROLE_DEVELOPER')">
+                                    <img th:src="@{/images/logo.png}" alt="" class="app-logo" />
+                                </a>
+                                <a th:href="@{/vendor/meals}" sec:authorize="hasAuthority('ROLE_VENDOR')">
                                     <img th:src="@{/images/logo.png}" alt="" class="app-logo" />
                                 </a>
                             </div>

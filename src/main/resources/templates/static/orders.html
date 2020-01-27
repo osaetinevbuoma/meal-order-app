@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{/layout}">
+<head>
+    <meta th:replace="fragments/csrf :: csrf" />
+    <title>Vendor | Orders</title>
+</head>
+<body>
+    <div layout:fragment="content">
+        <div class="product-collection-area pb-50">
+            <div class="container">
+                <div class="section-title text-center mb-55">
+                    <h2>Orders</h2>
+                </div>
+                <div class="row">
+                    <div class="col-lg-2">
+                        <h5>Filter Orders</h5>
+
+                        <strong>Payment</strong>
+                        <div v-for="option in paymentOptions" :key="option.id">
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" name="filter"
+                                       :id="'option_' + option.id"
+                                       :checked="filteredPaymentOption === 'option_' + option.id"
+                                       @change="filterByPaymentOption(option, 'option_' + option.id)">
+                                <label class="form-check-label" :for="'option_' + option.id">
+                                    {{ option.option }}
+                                </label>
+                            </div>
+                        </div>
+
+                        <br>
+
+                        <strong>Delivery</strong>
+                        <div v-for="type in deliveryTypes" :key="type.id">
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" name="filter"
+                                       :id="'type_' + type.id"
+                                       :checked="filteredDeliveryOption === 'type_' + type.id"
+                                       @change="filterByDeliveryType(type, 'type_' + type.id)">
+                                <label class="form-check-label" :for="'type_' + type.id">
+                                    {{ type.type }}
+                                </label>
+                            </div>
+                        </div>
+
+                        <div class="button-box">
+                            <button type="button" class="default-btn" @click="resetFilter()">Reset Filter</button>
+                        </div>
+                    </div>
+
+                    <div class="col-lg-7">
+                        <table class="table table-hover">
+                            <thead>
+                            <tr>
+                                <th>Reference</th>
+                                <th>Developer</th>
+                                <th>Payment</th>
+                                <th>Delivery</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr v-for="(order, index) in orders" :key="order.id"
+                                :class="{ selected: (index === selectedIndex) }"
+                                @click.prevent="getOrderDetails(order, index)" class="order-rows">
+                                <td>{{ order.reference }}</td>
+                                <td>{{ order.user.firstName }} {{ order.user.lastName }}</td>
+                                <td>{{ order.paymentOption.option }}</td>
+                                <td>{{ order.deliveryType.type }}</td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <!-- Create/Edit meals -->
+                    <div class="col-lg-3" v-if="orderDetails.length > 0">
+                        <table class="table table-hover table-striped">
+                            <thead>
+                            <tr>
+                                <th>Meal</th>
+                                <th>Price</th>
+                                <th>Quantity</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr v-for="detail in orderDetails" :key="detail.id">
+                                <td>{{ detail.name }}</td>
+                                <td><format-price :price="detail.price"></format-price></td>
+                                <td>{{ detail.quantity }}</td>
+                            </tr>
+                            </tbody>
+                        </table>
+
+                        <div>
+                            <strong>Total: {{ totalCost }}</strong>
+                        </div> <br>
+
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" id="isPaid"
+                                   :checked="selectedOrder.isPaid"
+                                   :disabled="selectedOrder.isPaid" @change="markAsPaid()">
+                            <label class="form-check-label" for="isPaid">
+                                Check the box if developer has paid for meal
+                            </label>
+                        </div>
+
+                        <div class="button-box">
+                            <button type="button" class="default-btn"
+                                    @click="fulfilOrder()">
+                                Fulfil Order</button>
+                        </div>
+                        <br>
+                        <div v-html="notification_message" class="text-success"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div layout:fragment="javascripts">
+        <!-- VueJS app files -->
+        <script th:src="@{/javascripts/app/vue-app/component/notification-counter.component.js}"></script>
+        <script th:src="@{/javascripts/app/vue-app/component/format-price.component.js}"></script>
+        <script th:src="@{/javascripts/app/vue-app/vendor/orders.js}"></script>
+    </div>
+</body>
+</html>

@@ -38,8 +38,8 @@ public class Meal {
     @OneToMany(targetEntity = Cart.class, mappedBy = "meal")
     private List<Cart> carts;
 
-    @OneToMany(targetEntity = Order.class, mappedBy = "meal")
-    private List<Order> orders;
+    @OneToMany(targetEntity = OrderedMeal.class, mappedBy = "meal")
+    private List<OrderedMeal> orderedMeals;
 
     @CreatedDate
     private Date createdAt;

@@ -52,37 +52,25 @@ public class StaticController {
     @GetMapping("/meals")
     @Secured("ROLE_DEVELOPER")
     public String meals() {
-        return "meal/meals";
+        return "static/meals";
     }
 
     @GetMapping("/meal/{id}")
     @Secured("ROLE_DEVELOPER")
     public String mealDetail(@PathVariable("id") int id) {
-        return "meal/detail";
+        return "static/meal_detail";
     }
 
     @GetMapping("/cart")
     @Secured("ROLE_DEVELOPER")
     public String cart() {
-        return "cart/cart";
-    }
-
-    @GetMapping("/order")
-    @Secured("ROLE_DEVELOPER")
-    public String order() {
-        return "order/order";
-    }
-
-    @GetMapping("/order/purchase")
-    @Secured("ROLE_DEVELOPER")
-    public String purchase() {
-        return null;
+        return "static/cart";
     }
 
     @GetMapping("/order/confirmed")
     @Secured("ROLE_DEVELOPER")
     public String orderConfirmed() {
-        return "order/confirmed";
+        return "static/confirmed";
     }
 
     /*
@@ -97,6 +85,6 @@ public class StaticController {
     @GetMapping("/vendor/orders")
     @Secured("ROLE_VENDOR")
     public String vendorOrders() {
-        return null;
+        return "static/orders";
     }
 }

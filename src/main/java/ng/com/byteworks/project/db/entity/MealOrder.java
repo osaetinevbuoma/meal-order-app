@@ -13,7 +13,7 @@ import java.util.List;
 @Data
 @Entity
 @EntityListeners(AuditingEntityListener.class)
-public class User {
+public class MealOrder {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO, generator = "native")
@@ -21,25 +21,28 @@ public class User {
     private Integer id;
 
     @Column(nullable = false)
-    private String firstName;
+    private Integer reference;
 
     @Column(nullable = false)
-    private String lastName;
-
-    @Column(nullable = false, unique = true)
-    private String email;
+    private Boolean isPlacedNow;
 
     @Column(nullable = false)
-    private String password;
+    private Boolean isDispatched;
 
-    @OneToMany(targetEntity = Cart.class, mappedBy = "user")
-    private List<Cart> carts;
+    @Column(nullable = false)
+    private Boolean isPaid;
 
-    @OneToMany(targetEntity = MealOrder.class, mappedBy = "user")
-    private List<MealOrder> orders;
+    @OneToMany(targetEntity = OrderedMeal.class, mappedBy = "mealOrder")
+    private List<OrderedMeal> orderedMeals;
 
-    @ManyToOne(targetEntity = Role.class)
-    private Role role;
+    @ManyToOne(targetEntity = User.class)
+    private User user;
+
+    @ManyToOne(targetEntity = PaymentOption.class)
+    private PaymentOption paymentOption;
+
+    @ManyToOne(targetEntity = DeliveryType.class)
+    private DeliveryType deliveryType;
 
     @CreatedDate
     private Date createdAt;
@@ -47,13 +50,13 @@ public class User {
     @LastModifiedDate
     private Date updatedAt;
 
-    public User() {
+    public MealOrder() {
     }
 
-    public User(String firstName, String lastName, String email, String password) {
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.email = email;
-        this.password = password;
+    public MealOrder(Integer reference, Boolean isPaid) {
+        this.reference = reference;
+        this.isPlacedNow = true;
+        this.isDispatched = false;
+        this.isPaid = isPaid;
     }
 }

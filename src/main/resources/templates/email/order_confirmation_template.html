@@ -39,20 +39,20 @@
                     <tr>
                         <td style="font-size: 14px; color: #737373; padding: 20px 0 35px 0;">
                             An order has been placed by
-                            <span th:text="${orders.get(0).user.firstName  + ' ' + orders.get(0).user.lastName}"></span>. <br>
+                            <span th:text="${order.user.firstName  + ' ' + order.user.lastName}"></span>. <br>
                             The details of the purchase is as follows:
                         </td>
                     </tr>
                     <tr>
                         <td style="font-size: 14px; color: #737373; padding: 20px 0 35px 0;" align="center">
                             <table cellspacing="2">
-                                <tr th:each="order : ${orders}">
+                                <tr th:each="o : ${order.orderedMeals}">
                                     <td>
-                                        <img th:src="${baseUrl + '/images' + order.meal.image}"
+                                        <img th:src="${baseUrl + '/images' + o.meal.image}"
                                              style="width: 80px;">
                                     </td>
                                     <td>
-                                        <span th:text="${order.meal.name + ' &times; ' + order.quantity}"></span>
+                                        <span th:text="${o.meal.name + ' &times; ' + o.quantity}"></span>
                                     </td>
                                 </tr>
                             </table>
@@ -61,13 +61,13 @@
                     <tr>
                         <td style="font-size: 14px; color: #737373; padding: 20px 0 35px 0;">
                             <strong>Payment Option</strong>:
-                            <span th:text="${orders.get(0).paymentOption.option}"></span>
+                            <span th:text="${order.paymentOption.option}"></span>
                         </td>
                     </tr>
                     <tr>
                         <td style="font-size: 14px; color: #737373; padding: 20px 0 35px 0;">
                             <strong>Delivery Option</strong>:
-                            <span th:text="${orders.get(0).deliveryType.type}"></span>
+                            <span th:text="${order.deliveryType.type}"></span>
                         </td>
                     </tr>
                     <tr>

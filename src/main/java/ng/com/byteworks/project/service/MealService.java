@@ -26,9 +26,9 @@ public class MealService {
     public Page<Meal> listMeals(Pageable pageable) {
         Page<Meal> meals = mealRepository.findAllByIsAvailableTrue(pageable);
         meals.get().forEach(meal -> {
-            // carts and orders are not needed.
+            // carts and ordered meals are not needed.
             meal.setCarts(null);
-            meal.setOrders(null);
+            meal.setOrderedMeals(null);
         });
         return meals;
     }

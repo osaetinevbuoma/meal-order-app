@@ -35,6 +35,11 @@ public class CartService {
         this.utilService = utilService;
     }
 
+    /**
+     * Get the developer's list of cart items and their email.
+     * Attach list of delivery types and payment options for selection.
+     * @return a map of cart items, developer's email, payment options and delivery types
+     */
     public Map<String, Object> listCart() {
         Map<String, Object> cartMap = new HashMap<>();
         List<Map<String, Object>> cartList = new ArrayList<>();

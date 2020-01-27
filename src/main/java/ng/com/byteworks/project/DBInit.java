@@ -4,10 +4,7 @@ import ng.com.byteworks.project.db.entity.DeliveryType;
 import ng.com.byteworks.project.db.entity.PaymentOption;
 import ng.com.byteworks.project.db.entity.Role;
 import ng.com.byteworks.project.db.entity.User;
-import ng.com.byteworks.project.db.repository.DeliveryTypeRepository;
-import ng.com.byteworks.project.db.repository.PaymentOptionRepository;
-import ng.com.byteworks.project.db.repository.RoleRepository;
-import ng.com.byteworks.project.db.repository.UserRepository;
+import ng.com.byteworks.project.db.repository.*;
 import ng.com.byteworks.project.enums.RoleEnum;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
@@ -25,14 +22,16 @@ public class DBInit implements CommandLineRunner {
     private final PaymentOptionRepository paymentOptionRepository;
     private final RoleRepository roleRepository;
     private final UserRepository userRepository;
+//    private final MealOrderRepository mealOrderRepository;
 
     public DBInit(DeliveryTypeRepository deliveryTypeRepository,
                   PaymentOptionRepository paymentOptionRepository, RoleRepository roleRepository,
-                  UserRepository userRepository) {
+                  UserRepository userRepository/*, MealOrderRepository mealOrderRepository*/) {
         this.deliveryTypeRepository = deliveryTypeRepository;
         this.paymentOptionRepository = paymentOptionRepository;
         this.roleRepository = roleRepository;
         this.userRepository = userRepository;
+//        this.mealOrderRepository = mealOrderRepository;
     }
 
     @Override
@@ -40,6 +39,8 @@ public class DBInit implements CommandLineRunner {
         try {
             System.out.println("=================================================================");
             System.out.println("Initializing database.");
+
+//            mealOrderRepository.deleteAll();
 
             List<Role> roles = roles();
             if (roles.size() > 0) {

@@ -13,6 +13,9 @@ Vue.component('notification-counter', {
             count: 0
         }
     },
+    props: {
+        cart_counter: Boolean
+    },
     template: `
         <button class="sidebar-trigger" title="Notification"
                 onclick="window.location = '/vendor/orders'">
@@ -27,10 +30,13 @@ Vue.component('notification-counter', {
     methods: {
         getOrders: function () {
             axios.get(API_URL + '/orders', { headers: headers })
-                .then((res) => {
-                    console.log(res);
-                })
+                .then((res) => this.count = res.data.length)
                 .catch((err) => console.log(err));
+        }
+    },
+    watch: {
+        cart_counter: function (value, oldValue) {
+            if (value) this.getOrders();
         }
     }
 });

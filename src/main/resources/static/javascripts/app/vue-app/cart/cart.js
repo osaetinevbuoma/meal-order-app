@@ -17,7 +17,8 @@ const app = new Vue({
         notification_message: '',
         cartCounterIncrement: false,
         developerEmail: '',
-        totalCost: 0
+        totalCost: 0,
+        placeOrderLabel: 'Place Order'
     },
     mounted: function () {
         this.getCartItems();
@@ -150,23 +151,30 @@ const app = new Vue({
          * Place order and make payment
          */
         placeOrder: function () {
-            let orders = [];
+            let reference = Math.floor((Math.random() * 1000000000) + 1);
+            let order = {
+                isPlacedNow: true,
+                isDispatched: false,
+                isPaid: this.paymentOption.option === 'Card Payment',
+                paymentOption: this.paymentOption,
+                deliveryType: this.deliveryOption,
+                reference: reference
+            };
+            let orderedMeals = [];
             for (let i = 0; i < this.cartItems.length; i++) {
-                let order = {
+                let orderedMeal = {
+                    name: this.cartItems[i].meal.name,
+                    price: this.cartItems[i].meal.price,
                     quantity: this.cartItems[i].quantity,
-                    meal: this.cartItems[i].meal,
-                    isPlacedNow: true,
-                    isDispatched: false,
-                    isPaid: true,
-                    paymentOption: this.paymentOption,
-                    deliveryType: this.deliveryOption
+                    meal: this.cartItems[i].meal
                 };
 
-                orders.push(order);
+                orderedMeals.push(orderedMeal);
             }
 
-            console.log(orders);
-            console.log(this.totalCost);
+            order.orderedMeals = orderedMeals;
+
+            this.placeOrderLabel = '<em>Processing Order...</em>';
 
             if (this.paymentOption.option === 'Card Payment') {
                 // Use Paystack to make payment
@@ -175,30 +183,26 @@ const app = new Vue({
                     email: this.developerEmail,
                     amount: this.totalCost * 100,
                     currency: 'NGN',
-                    ref: '' + Math.floor((Math.random() * 1000000000) + 1),
+                    ref: reference,
                     callback: (response) => {
-                        axios.post(API_URL + '/order/save', orders, { headers: headers })
+                        axios.post(API_URL + '/order/save', order, { headers: headers })
                             .then((res) => window.location = '/order/confirmed')
                             .catch((err) => {
-                                console.log(err)
+                                console.log(err);
                                 // in case connection to mail server fails on localhost
-                                setTimeout(() => {
-                                    window.location = '/order/confirmed';
-                                }, 3000);
+                                window.location = '/order/confirmed';
                             });
                     }
                 });
 
                 paymentHandler.openIframe();
             } else {
-                axios.post(API_URL + '/order/save', orders, { headers: headers })
+                axios.post(API_URL + '/order/save', order, { headers: headers })
                     .then((res) => window.location = '/order/confirmed')
                     .catch((err) => {
                         console.log(err)
                         // in case connection to mail server fails on localhost
-                        setTimeout(() => {
-                            window.location = '/order/confirmed';
-                        }, 3000);
+                        window.location = '/order/confirmed';
                     });
             }
         }

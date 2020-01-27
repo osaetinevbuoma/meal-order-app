@@ -1,8 +1,7 @@
 package ng.com.byteworks.project.service;
 
-import ng.com.byteworks.project.db.entity.Meal;
-import ng.com.byteworks.project.db.repository.MealRepository;
-import ng.com.byteworks.project.db.repository.OrderRepository;
+import ng.com.byteworks.project.db.entity.*;
+import ng.com.byteworks.project.db.repository.*;
 import org.springframework.data.domain.Sort;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Service;
@@ -12,14 +11,22 @@ import java.util.*;
 @Service
 @Secured("ROLE_VENDOR")
 public class VendorService {
+    private final DeliveryTypeRepository deliveryTypeRepository;
     private final MealRepository mealRepository;
-    private final OrderRepository orderRepository;
+    private final MealOrderRepository mealOrderRepository;
+    private final OrderedMealRepository orderedMealRepository;
+    private final PaymentOptionRepository paymentOptionRepository;
     private final UtilService utilService;
 
-    public VendorService(MealRepository mealRepository, OrderRepository orderRepository,
-                         UtilService utilService) {
+    public VendorService(DeliveryTypeRepository deliveryTypeRepository,
+                         MealRepository mealRepository, MealOrderRepository mealOrderRepository,
+                         OrderedMealRepository orderedMealRepository,
+                         PaymentOptionRepository paymentOptionRepository, UtilService utilService) {
+        this.deliveryTypeRepository = deliveryTypeRepository;
         this.mealRepository = mealRepository;
-        this.orderRepository = orderRepository;
+        this.mealOrderRepository = mealOrderRepository;
+        this.orderedMealRepository = orderedMealRepository;
+        this.paymentOptionRepository = paymentOptionRepository;
         this.utilService = utilService;
     }
 
@@ -57,5 +64,74 @@ public class VendorService {
         mealRepository.save(meal.get());
 
         return utilService.generateMealMap(meal.get());
+    }
+
+    /**
+     * List orders made by developers
+     * @return a list of orders
+     */
+    public List<Map<String, Object>> listOrders() {
+        List<Map<String, Object>> orders = new ArrayList<>();
+        List<MealOrder> mealOrders = mealOrderRepository.findAllByIsPlacedNowIsTrue();
+        mealOrders.forEach(mealOrder -> orders.add(utilService.generateMealOrderMap(mealOrder)));
+
+        return orders;
+    }
+
+    /**
+     * Get details of an order. These refer to meal information.
+     * @param id    id of order
+     * @return list of meals
+     */
+    public List<Map<String, Object>> getOrderDetails(int id) {
+        List<Map<String, Object>> orderDetails = new ArrayList<>();
+
+        Optional<MealOrder> mealOrder = mealOrderRepository.findById(id);
+        if (!mealOrder.isPresent()) return null;
+
+        List<OrderedMeal> orderedMeals = orderedMealRepository.findAllByMealOrder(mealOrder.get());
+        orderedMeals.forEach(orderedMeal -> orderDetails.add(utilService.generateOrderedMealMap(
+                orderedMeal)));
+
+        return orderDetails;
+    }
+
+    /**
+     * List of payment options.
+     * @return
+     */
+    public List<Map<String, Object>> listPaymentOptions() {
+        List<Map<String, Object>> options = new ArrayList<>();
+        List<PaymentOption> paymentOptions = paymentOptionRepository.findAll(Sort.by(
+                Sort.Direction.ASC, "option"));
+        paymentOptions.forEach(paymentOption -> options.add(utilService.generatePaymentOptionMap(
+                paymentOption)));
+
+        return options;
+    }
+
+    /**
+     * List of delivery types
+     * @return
+     */
+    public List<Map<String, Object>> listDeliveryTypes() {
+        List<Map<String, Object>> types = new ArrayList<>();
+        List<DeliveryType> deliveryTypes = deliveryTypeRepository.findAll(Sort.by(Sort.Direction.ASC,
+                "type"));
+        deliveryTypes.forEach(deliveryType -> types.add(utilService.generateDeliveryTypeMap(
+                deliveryType)));
+
+        return types;
+    }
+
+    /**
+     * Fulfil an order request by setting dispatched and paid to true
+     * @param mealOrder meal order to fulfil
+     */
+    public void fulfilOrder(MealOrder mealOrder) {
+        mealOrder.setIsDispatched(true);
+        mealOrder.setIsPaid(true);
+        mealOrder.setIsPlacedNow(false);
+        mealOrderRepository.save(mealOrder);
     }
 }

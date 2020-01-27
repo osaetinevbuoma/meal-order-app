@@ -116,8 +116,7 @@
                                         <li>Total <span>{{ computeTotal() }}</span></li>
                                     </ul>
                                     <a href="#" v-if="cartItems.length > 0"
-                                       @click.prevent="placeOrder()">
-                                        Place Order
+                                       @click.prevent="placeOrder()" v-html="placeOrderLabel">
                                     </a>
                                 </div>
                             </div>

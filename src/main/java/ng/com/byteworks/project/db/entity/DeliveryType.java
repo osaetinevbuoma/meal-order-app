@@ -26,8 +26,8 @@ public class DeliveryType {
     @Column(nullable = false)
     private Double amount;
 
-    @OneToMany(targetEntity = Order.class, mappedBy = "deliveryType")
-    private List<Order> orders;
+    @OneToMany(targetEntity = MealOrder.class, mappedBy = "deliveryType")
+    private List<MealOrder> orders;
 
     @CreatedDate
     private Date createdAt;

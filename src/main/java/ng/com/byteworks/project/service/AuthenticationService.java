@@ -26,10 +26,18 @@ public class AuthenticationService implements UserDetailsService {
         return user.map(AuthenticatedUser::new).orElse(null);
     }
 
+    /**
+     * Returns authentication context
+     * @return
+     */
     public Authentication getAuth() {
         return SecurityContextHolder.getContext().getAuthentication();
     }
 
+    /**
+     * Returns an authenticated user
+     * @return
+     */
     public AuthenticatedUser getAuthenticatedUser() {
         return (AuthenticatedUser) getAuth().getPrincipal();
     }

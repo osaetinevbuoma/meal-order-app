@@ -73,3 +73,11 @@ input[type="radio"] {
     height: 0;
     width: 0;
 }
+
+.selected {
+    background-color: #e2e2e2;
+}
+
+.order-rows {
+    cursor: pointer;
+}

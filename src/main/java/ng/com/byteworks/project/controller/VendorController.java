@@ -1,6 +1,7 @@
 package ng.com.byteworks.project.controller;
 
 import ng.com.byteworks.project.db.entity.Meal;
+import ng.com.byteworks.project.db.entity.MealOrder;
 import ng.com.byteworks.project.service.VendorService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -8,6 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.Map;
 import java.util.logging.Logger;
 
@@ -55,5 +57,36 @@ public class VendorController {
         if (null == mealMap) return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
 
         return ResponseEntity.ok(mealMap);
+    }
+
+    @GetMapping(value = "/orders", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<?> listOrders() {
+        return ResponseEntity.ok(vendorService.listOrders());
+    }
+
+    @GetMapping(value = "/order/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<?> getOrderDetails(@PathVariable("id") int id) {
+        List<Map<String, Object>> orderDetails = vendorService.getOrderDetails(id);
+        if (null == orderDetails) return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                .body("Requested order not found.");
+
+        return ResponseEntity.ok(orderDetails);
+    }
+
+    @GetMapping(value = "/payment-options", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<?> listPaymentOptions() {
+        return ResponseEntity.ok(vendorService.listPaymentOptions());
+    }
+
+    @GetMapping(value = "/delivery-types", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<?> listDeliveryTypes() {
+        return ResponseEntity.ok(vendorService.listDeliveryTypes());
+    }
+
+    @PutMapping(value = "/fulfil-order", consumes = MediaType.APPLICATION_JSON_VALUE,
+            produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<?> fulfilOrder(@RequestBody MealOrder mealOrder) {
+        vendorService.fulfilOrder(mealOrder);
+        return ResponseEntity.ok().body("Saved");
     }
 }

@@ -26,8 +26,8 @@ public class PaymentOption {
     @Column(nullable = false)
     private Double discount;
 
-    @OneToMany(targetEntity = Order.class, mappedBy = "paymentOption")
-    private List<Order> orders;
+    @OneToMany(targetEntity = MealOrder.class, mappedBy = "paymentOption")
+    private List<MealOrder> orders;
 
     @CreatedDate
     private Date createdAt;
