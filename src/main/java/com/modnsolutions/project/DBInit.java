@@ -125,10 +125,10 @@ public class DBInit implements CommandLineRunner {
         Optional<Role> role = roleRepository.findByRole(RoleEnum.ROLE_VENDOR.toString());
         if (!role.isPresent()) return null;
 
-        String firstName = "John";
-        String lastName = "Doe";
-        String email = "osaetinevbuoma@gmail.com"; // change to desired email
-        String password = new BCryptPasswordEncoder().encode("123");
+        String firstName = "<VENDOR_FIRST_NAME>";
+        String lastName = "<VENDOR_LAST_NAME>";
+        String email = "<VENDOR_EMAIL>"; // change to desired email
+        String password = new BCryptPasswordEncoder().encode("<VENDOR_PASSWORD>");
 
         Optional<User> optionalUser = userRepository.findByEmail(email);
         if (optionalUser.isPresent()) return null;
