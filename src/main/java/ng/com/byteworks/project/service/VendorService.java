@@ -48,7 +48,7 @@ public class VendorService {
      * @return
      */
     public Map<String, Object> addMeal(Meal meal) {
-        String image = "/food/food_" + utilService.generateRandomNumber(1, 12) + ".jpg";
+        String image = "/food/food_" + utilService.generateRandomNumber(1, 20) + ".jpg";
         meal.setImage(image);
         meal.setIsAvailable(meal.getIsAvailable() != null);
 

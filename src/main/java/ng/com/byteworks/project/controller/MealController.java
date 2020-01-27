@@ -30,7 +30,7 @@ public class MealController {
         Map<String, Object> meals = new HashMap<>();
 
         int currentPage = page.orElse(1);
-        int itemsPerPage = 8;
+        int itemsPerPage = 12;
 
         Page<Meal> mealPage = mealService.listMeals(PageRequest.of(currentPage - 1,
                 itemsPerPage));
