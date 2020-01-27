@@ -55,10 +55,11 @@ bootJar {
     classifier = 'boot'
 }
 
+/*
 war {
     enabled = true
 }
 
 bootWar {
     classifier = 'boot'
-}
+}*/
