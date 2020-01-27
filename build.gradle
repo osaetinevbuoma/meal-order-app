@@ -2,7 +2,7 @@ plugins {
     id 'org.springframework.boot' version '2.2.4.RELEASE'
     id 'io.spring.dependency-management' version '1.0.9.RELEASE'
     id 'java'
-//    id 'war'
+    id 'war'
 }
 
 group = 'ng.com.byteworks'
@@ -36,7 +36,7 @@ dependencies {
     developmentOnly 'org.springframework.boot:spring-boot-devtools'
     runtimeOnly 'com.h2database:h2'
     annotationProcessor 'org.projectlombok:lombok'
-//    providedRuntime 'org.springframework.boot:spring-boot-starter-tomcat'
+    providedRuntime 'org.springframework.boot:spring-boot-starter-tomcat'
     testImplementation('org.springframework.boot:spring-boot-starter-test') {
         exclude group: 'org.junit.vintage', module: 'junit-vintage-engine'
     }
@@ -55,11 +55,10 @@ bootJar {
     classifier = 'boot'
 }
 
-/*
 war {
     enabled = true
 }
 
 bootWar {
     classifier = 'boot'
-}*/
+}
