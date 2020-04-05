@@ -28,6 +28,9 @@ Replace the `firstName`, `lastName`, `email` and `password` in the `vendor()` me
 with your preferred parameters.
 * Database initialization can be disabled by changing the parameter of `db.init` in
 `src/main/resources/application.properties` from `true` to `false`.
+* **Note**: The app uses Mailgun settings to send emails. Create an account [here](http://www.mailgun.com)
+if you do not already have one. In `application.properties`, input the values of your email account
+username and password in `spring.mail.username` and `spring.mail.password` respectively.
 
 ### Run The App
 * In the root directory, start the app with `./gradlew bootRun`.
