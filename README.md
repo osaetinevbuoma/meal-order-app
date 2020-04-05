@@ -9,6 +9,10 @@ an order.
 * [Vue.js](https://vuejs.org)
 * [H2 Database](https://www.h2database.com)
 
+### Third party services
+* Paystack
+* Mailgun
+
 ## Download
 Clone the repository `git clone https://github.com/osaetinevbuoma/meal-order-app.git`.
 
